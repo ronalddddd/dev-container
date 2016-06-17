@@ -24,9 +24,5 @@ RUN apt-get install --yes nodejs
 
 RUN mkdir /projects
 
-# Install tty.js and start it as daemon (defaults to port 3000)
-npm install -g tty.js
-tty.js --daemonize
-
 EXPOSE 22 80 443 3000
 CMD ["/usr/sbin/sshd", "-D"]
