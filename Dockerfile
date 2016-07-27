@@ -1,5 +1,6 @@
 FROM ubuntu:14.04
 MAINTAINER Ronald Ng "https://github.com/ronalddddd"
+# adapted from https://docs.docker.com/engine/examples/running_ssh_service/
 
 ARG SSH_PASSWORD
 ENV SSH_PASSWORD ${SSH_PASSWORD:-happymeal}
@@ -12,13 +13,13 @@ RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/ss
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-ENV NOTVISIBLE "in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile
+# ENV NOTVISIBLE "in users profile"
+# RUN echo "export VISIBLE=now" >> /etc/profile
 
 # Force password change on login
-RUN chage -d0 root
+# RUN chage -d0 root
 
-# Enable tunnels
+# Enable SSH tunneling
 RUN echo "PermitTunnel yes" >> /etc/ssh/sshd_config
 
 # Install node.js
@@ -28,7 +29,9 @@ RUN apt-get install -y wget
 RUN wget -qO- https://deb.nodesource.com/setup_5.x | bash -
 RUN apt-get install --yes nodejs
 
+# Create projects folder
 RUN mkdir /projects
+VOLUME ["/projects"]
 
 EXPOSE 22 80 443 3000
-CMD ["/usr/sbin/sshd", "-D"]
+CMD echo "root:$SSH_PASSWORD" | chpasswd && /usr/sbin/sshd -D
