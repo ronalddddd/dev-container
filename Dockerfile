@@ -5,7 +5,8 @@ MAINTAINER Ronald Ng "https://github.com/ronalddddd"
 ARG SSH_PASSWORD
 ENV SSH_PASSWORD ${SSH_PASSWORD:-happymeal}
 
-RUN apt-get update && apt-get install -y openssh-server
+# Install SSH server
+RUN apt-get update && apt-get install -y openssh-server vim htop tree
 RUN mkdir /var/run/sshd
 RUN echo "root:$SSH_PASSWORD" | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
@@ -26,12 +27,13 @@ RUN echo "PermitTunnel yes" >> /etc/ssh/sshd_config
 RUN apt-get update
 RUN apt-get install -y build-essential
 RUN apt-get install -y wget
-RUN wget -qO- https://deb.nodesource.com/setup_5.x | bash -
+RUN wget -qO- https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install --yes nodejs
 
 # Create projects folder
 RUN mkdir /projects
 VOLUME ["/projects"]
-
-EXPOSE 22 80 443 3000
+# Expose SSH and other common web/development ports
+EXPOSE 22 80 443 3000 8080
+# Change the root password and start the SSH server
 CMD echo "root:$SSH_PASSWORD" | chpasswd && /usr/sbin/sshd -D
