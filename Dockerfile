@@ -30,6 +30,15 @@ RUN apt-get install -y wget
 RUN wget -qO- https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install --yes nodejs
 
+# Install a specific version of docker.
+# This is used for controlling host docker by mounting /var/run/docker.sock:/var/run/docker.sock
+# Adapted from http://stackoverflow.com/a/33575062
+curl -sSL https://get.docker.com/ | sh
+apt-cache showpkg docker-engine               # show version which are available
+apt-get install docker-engine=1.11.2-0~trusty # re-install with specific version
+apt-mark hold docker-engine                   # prevent upgrade on sys upgrade
+docker version                                # check installed docker version
+
 # Create projects folder
 RUN mkdir /projects
 VOLUME ["/projects"]
