@@ -3,7 +3,10 @@
 A multi-purpose Ubuntu base image with: 
 
 - SSH server with password login and tunneling enabled
-- Node.js version 5.x
+- Node.js version 6.x
+- Docker 1.11.2
+
+Note: default root password is `happymeal`.
 
 ## Sample usage:
 
