@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:14.10
 MAINTAINER Ronald Ng "https://github.com/ronalddddd"
 # adapted from https://docs.docker.com/engine/examples/running_ssh_service/
 
