@@ -29,6 +29,7 @@ RUN apt-get install -y build-essential
 RUN apt-get install -y wget
 RUN wget -qO- https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install --yes nodejs
+RUN apt-get install --yes openjdk-8-jdk-headless
 
 # Install a specific version of docker.
 # This is used for controlling host docker by mounting /var/run/docker.sock:/var/run/docker.sock
